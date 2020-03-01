@@ -6,9 +6,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
     env: 
       ENVIRONMENT: ${{ github.event.deployment_status.environment }}
-    if: github.event.deployment_status.environment == 'foo'
+      
     steps:
     - uses: actions/checkout@v2
     - name: Run a one-line script
