@@ -1,6 +1,6 @@
 name: CI
 
-on: [deployment_status]
+on: [deployment]
 
 jobs:
   build:
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env: 
-      ENVIRONMENT: ${{ github.event.deployment_status.environment }}
+      ENVIRONMENT: ${{ github.event.deployment.environment }}
       
     steps:
     - uses: actions/checkout@v2
