@@ -26,3 +26,9 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         status: ${{ job.status }}        
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - run: |
+        az aks list
