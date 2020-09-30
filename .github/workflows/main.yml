@@ -18,7 +18,7 @@ jobs:
     
     - uses: Azure/docker-login@v1
       with:
-        login-server: contoso.azurecr.io
+        login-server: wieldy.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -30,6 +30,9 @@ jobs:
         BRANCH=$(echo ${{ github.ref }} | rev | cut -d'/' -f 1 | rev)
         VERSION_SUFFIX=$(echo ${{format('{0}-{1}+{2}.{3}.{4}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number , '${BRANCH}', '${BUILD_VERSION}')}})
         echo $VERSION_SUFFIX
+        
+    - run: |
+        echo hello, world
         
     - uses: azure/login@v1
       with:
