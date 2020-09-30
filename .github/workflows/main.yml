@@ -22,14 +22,7 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-    
-    - name: update deploy status
-      if: always()
-      uses: unacast/actions-github-deployment-status@0.2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        status: ${{ job.status }}        
-    
+        
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
