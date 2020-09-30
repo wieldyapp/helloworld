@@ -26,8 +26,8 @@ jobs:
         VERSION_PREFIX=$(grep '<VersionPrefix>' hello.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
         VERSION_SUFFIX=$(grep '<VersionSuffix>' hello.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
-        VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo $VERSION
+        SYNC_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
+        echo $SYNC_VERSION
 #        docker build . -t wieldy.azurecr.io/k8sdemo:${VERSION}
 #        docker push wieldy.azurecr.io/k8sdemo:${VERSION}
         
@@ -35,28 +35,54 @@ jobs:
         VERSION_PREFIX=$(grep '<VersionPrefix>' world.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
         VERSION_SUFFIX=$(grep '<VersionSuffix>' world.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
-        VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo $VERSION
+        API_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
+        echo $API_VERSION
+        
+    - run: |
+        VERSION_PREFIX=$(grep '<VersionPrefix>' world.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
+        VERSION_SUFFIX=$(grep '<VersionSuffix>' world.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
+        BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
+        WEB_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
+        echo $WEB_VERSION        
                 
     - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: |
-          set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
-          set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
-#          set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
+        args: set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
+
+    - uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
+
+    - uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
     
     - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.15"
       with:
-        args: '"rollout status deployment/sync"'
+        args: rollout status deployment/sync
           
     - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.15"
       with:
-        args: '"rollout status deployment/api"'
+        args: rollout status deployment/api
+
+    - uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.15"
+      with:
+        args: rollout status deployment/web
+    
+    - name: Ending action
+      run: echo $WEB_VERSION
