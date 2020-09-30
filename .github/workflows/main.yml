@@ -21,8 +21,7 @@ jobs:
         login-server: contoso.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    
-    - name: Build images
+
     - run: |
         VERSION_PREFIX=$(grep '<VersionPrefix>' hello.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
         VERSION_SUFFIX=$(grep '<VersionSuffix>' hello.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")
@@ -31,11 +30,6 @@ jobs:
         BRANCH=$(echo ${{ github.ref }} | rev | cut -d'/' -f 1 | rev)
         VERSION_SUFFIX=$(echo ${{format('{0}-{1}+{2}.{3}.{4}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number , '${BRANCH}', '${BUILD_VERSION}')}})
         echo $VERSION_SUFFIX
-    
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
         
     - uses: azure/login@v1
       with:
@@ -43,8 +37,7 @@ jobs:
     - run: |
         az aks list
     
-    - name: verify deployment
-      uses: steebchen/kubectl@master
+    - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.15"
