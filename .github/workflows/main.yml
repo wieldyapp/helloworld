@@ -26,18 +26,16 @@ jobs:
         VERSION_PREFIX=$(grep '<VersionPrefix>' hello.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
         VERSION_SUFFIX=$(grep '<VersionSuffix>' hello.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
-        BRANCH=$(echo ${{ github.ref }} | rev | cut -d'/' -f 1 | rev)
-        VERSION=$(echo ${{format('{0}-{1}__{2}.{3}.{4}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number , '${BRANCH}', '${BUILD_VERSION}')}})
+        VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
         echo $VERSION
-        docker build . -t contoso.azurecr.io/k8sdemo:${VERSION}
-        docker push wieldy.azurecr.io/k8sdemo:${VERSION}
+#        docker build . -t wieldy.azurecr.io/k8sdemo:${VERSION}
+#        docker push wieldy.azurecr.io/k8sdemo:${VERSION}
         
     - run: |
         VERSION_PREFIX=$(grep '<VersionPrefix>' world.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
         VERSION_SUFFIX=$(grep '<VersionSuffix>' world.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
-        BRANCH=$(echo ${{ github.ref }} | rev | cut -d'/' -f 1 | rev)
-        VERSION=$(echo ${{format('{0}-{1}__{2}.{3}.{4}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number , '${BRANCH}', '${BUILD_VERSION}')}})
+        VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
         echo $VERSION
                 
     - name: deploy to cluster
@@ -45,11 +43,18 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: set image --record deployment/my-app container=${{ github.repository }}:${VERSION}
+        args: |
+          set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
+          set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
+          set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
+    
     - name: verify deployment
       uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.15"
       with:
-        args: '"rollout status deployment/my-app"'
+        args: |
+          rollout status deployment/sync
+          rollout status deployment/api
+          rollout status deployment/web
