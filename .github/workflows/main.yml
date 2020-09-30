@@ -38,22 +38,25 @@ jobs:
         VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
         echo $VERSION
                 
-    - name: deploy to cluster
-      uses: steebchen/kubectl@master
+    - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: |
           set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
           set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
-          set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
+#          set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
     
-    - name: verify deployment
-      uses: steebchen/kubectl@master
+    - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.15"
       with:
-        args: |
-          rollout status deployment/sync
-          rollout status deployment/api
+        args: '"rollout status deployment/sync"'
+          
+    - uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.15"
+      with:
+        args: '"rollout status deployment/api"'
