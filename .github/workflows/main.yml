@@ -92,7 +92,8 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: nodejs
       with:
-        environment: production    
+        environment: production
+        version: $WEB_VERSION
     
     - name: Ending action
       run: |
