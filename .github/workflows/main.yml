@@ -93,7 +93,7 @@ jobs:
         SENTRY_PROJECT: nodejs
       with:
         environment: production
-        version: $WEB_VERSION
+        version: '${WEB_VERSION}'
     
     - name: Ending action
       run: |
