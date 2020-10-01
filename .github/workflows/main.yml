@@ -83,15 +83,6 @@ jobs:
         KUBECTL_VERSION: "1.15"
       with:
         args: rollout status deployment/web
-    
-    - name: Create Sentry release
-      uses: getsentry/action-release@v1
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      with:
-        environment: production
-    
+        
     - name: Ending action
-      run: echo $WEB_VERSION
+      run: echo ${$WEB_VERSION}
