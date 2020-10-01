@@ -43,7 +43,7 @@ jobs:
         VERSION_SUFFIX=$(grep '<VersionSuffix>' world.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
         WEB_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo $WEB_VERSION        
+        echo "::set-env name=WEB_VERSION::$WEB_VERSION"        
                 
     - uses: steebchen/kubectl@master
       env:
@@ -85,4 +85,4 @@ jobs:
         args: rollout status deployment/web
         
     - name: Ending action
-      run: echo ${$WEB_VERSION}
+      run: echo $WEB_VERSION
