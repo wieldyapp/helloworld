@@ -27,7 +27,7 @@ jobs:
         VERSION_SUFFIX=$(grep '<VersionSuffix>' hello.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
         SYNC_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo $SYNC_VERSION
+        echo "::set-env name=SYNC_VERSION::$SYNC_VERSION"
 #        docker build . -t wieldy.azurecr.io/k8sdemo:${VERSION}
 #        docker push wieldy.azurecr.io/k8sdemo:${VERSION}
         
@@ -36,7 +36,7 @@ jobs:
         VERSION_SUFFIX=$(grep '<VersionSuffix>' world.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
         API_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo $API_VERSION
+        echo "::set-env name=API_VERSION::$API_VERSION"
         
     - run: |
         VERSION_PREFIX=$(grep '<VersionPrefix>' world.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
@@ -85,4 +85,7 @@ jobs:
         args: rollout status deployment/web
         
     - name: Ending action
-      run: echo $WEB_VERSION
+      run: |
+        echo $WEB_VERSION
+        echo $API_VERSION
+        echo $SYNC_VERSION
