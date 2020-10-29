@@ -102,4 +102,4 @@ jobs:
         echo $WEB_VERSION
         echo $API_VERSION
         echo $SYNC_VERSION
-        echo $ {{ github.ref }}
+        echo github.ref
