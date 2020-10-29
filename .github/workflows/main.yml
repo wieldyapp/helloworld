@@ -99,4 +99,4 @@ jobs:
       run: |
         echo $WEB_VERSION
         echo $API_VERSION
-        echo $env.STATE_SYNC_VERSION
+        echo ${{ env.STATE_SYNC_VERSION }}
