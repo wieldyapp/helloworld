@@ -45,23 +45,23 @@ jobs:
         WEB_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
         echo "::set-env name=WEB_VERSION::$WEB_VERSION"        
                 
-    - uses: steebchen/kubectl@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      with:
-        args: set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
-
-    - uses: steebchen/kubectl@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      with:
-        args: set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
-
-    - uses: steebchen/kubectl@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      with:
-        args: set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
+#    - uses: steebchen/kubectl@master
+#      env:
+#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      with:
+#        args: set image --record deployment/sync sync=wieldy.azurecr.io/sync-service:0.0.1-preview.11
+#
+#    - uses: steebchen/kubectl@master
+#      env:
+#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      with:
+#        args: set image --record deployment/api api=wieldy.azurecr.io/api-service:0.0.1-preview.104
+#
+#    - uses: steebchen/kubectl@master
+#      env:
+#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      with:
+#        args: set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
     
     - uses: steebchen/kubectl@master
       env:
@@ -84,16 +84,16 @@ jobs:
       with:
         args: rollout status deployment/web
         
-    - uses: actions/checkout@v2
-    - name: Create Sentry release
-      uses: getsentry/action-release@v1
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-        SENTRY_PROJECT: helloworld
-      with:
-        environment: production
-        version: '${WEB_VERSION}'
+#    - uses: actions/checkout@v2
+#    - name: Create Sentry release
+#      uses: getsentry/action-release@v1
+#      env:
+#        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+#        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+#        SENTRY_PROJECT: helloworld
+#      with:
+#        environment: production
+#        version: '${WEB_VERSION}'
     
     - name: Ending action
       run: |
