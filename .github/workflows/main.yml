@@ -27,7 +27,7 @@ jobs:
         VERSION_SUFFIX=$(grep '<VersionSuffix>' hello.csproj | sed "s@.*<VersionSuffix>\(.*\)</VersionSuffix>.*@\1@")        
         BUILD_VERSION=$(echo ${{ github.sha }} | awk '{print substr($0, length($0)-7)}')
         SYNC_VERSION=$(echo ${{format('{0}-{1}.{2}', '${VERSION_PREFIX}', '${VERSION_SUFFIX}', github.run_number)}})
-        echo "::save-state name=SYNC_VERSION::$SYNC_VERSION"
+        echo "SYNC_VERSION=$SYNC_VERSION" >> $GITHUB_ENV
 #        docker build . -t wieldy.azurecr.io/k8sdemo:${VERSION}
 #        docker push wieldy.azurecr.io/k8sdemo:${VERSION}
         
@@ -99,4 +99,4 @@ jobs:
       run: |
         echo $WEB_VERSION
         echo $API_VERSION
-        echo ${{ env.STATE_SYNC_VERSION }}
+        echo $SYNC_VERSION
