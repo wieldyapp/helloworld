@@ -2,13 +2,12 @@
 
 name: Security Headers
 
-on:
-  schedule:
-    - cron: 0 0 * * *
+on: deployment_status
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'Production' && github.event.deployment_status.state == 'success'
     steps:
       - uses: actions/checkout@v2
         with:
