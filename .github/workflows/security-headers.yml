@@ -19,6 +19,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: marcuslindblom/security-headers/actions@master
+      - uses: marcuslindblom/security-headers/actions@main
         with:
           url: 'https://mprt.se'
