@@ -1,6 +1,6 @@
 name: Lighthouse Check with Minimum Score Enforcement
 
-on: deployment_stats
+on: deployment_status
 
 jobs:
   lighthouse-check:
