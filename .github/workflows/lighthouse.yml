@@ -1,0 +1,31 @@
+name: Lighthouse Check with Minimum Score Enforcement
+
+on: deployment_stats
+
+jobs:
+  lighthouse-check:
+    runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'production' && github.event.deployment_status.state == 'success'
+    steps:
+      - uses: actions/checkout@master
+      - run: npm install
+      - name: Run Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        id: lighthouseCheck
+        with:
+          urls: 'https://mprt.se/'
+          accessToken: ${{ secrets.DEPLOY_TOKEN }}
+          author: ${{ github.actor }}
+          branch: ${{ github.ref }}
+          sha: ${{ github.sha }}
+          #slackWebhookUrl: ${{ secrets.SLACK_WEBHOOK }}
+          # ... all your other inputs
+      - name: Handle Lighthouse Check results
+        uses: foo-software/lighthouse-check-status-action@master
+        with:
+          lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+          minAccessibilityScore: "90"
+          minBestPracticesScore: "50"
+          minPerformanceScore: "50"
+          minProgressiveWebAppScore: "50"
+          minSeoScore: "50"
