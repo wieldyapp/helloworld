@@ -1,4 +1,4 @@
-name: Lighthouse Check with Minimum Score Enforcement
+name: Lighthouse Check
 
 on: deployment_status
 
