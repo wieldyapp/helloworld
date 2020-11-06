@@ -61,12 +61,14 @@ jobs:
 #      with:
 #        args: set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
 
-    - name: update deploy status
-      if: always()
-      uses: unacast/actions-github-deployment-status@master
+    - name: Update deployment status (in_progress)
+      if: success()
+      uses: chrnorm/deployment-status@releases/v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        status: in_progress
+        token: "${{ github.token }}"
+        target_url: https://wieldy.app
+        state: "in_progress"
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
         
     - uses: steebchen/kubectl@master
       env:
@@ -108,9 +110,21 @@ jobs:
         GH_REF=$(echo ${{ github.ref }})
         echo $GH_REF
 
-    - name: update deploy status
-      if: always()
-      uses: unacast/actions-github-deployment-status@master
+    - name: Update deployment status (success)
+      if: success()
+      uses: chrnorm/deployment-status@releases/v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        status: ${{ job.status }}
+        token: "${{ github.token }}"
+        target_url: https://wieldy.app
+        state: "success"
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+    - name: Update deployment status (failure)
+      if: failure()
+      uses: chrnorm/deployment-status@releases/v1
+      with:
+        token: "${{ github.token }}"
+        target_url: https://wieldy.app
+        state: "failure"
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
