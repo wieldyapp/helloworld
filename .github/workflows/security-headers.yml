@@ -19,6 +19,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: marcuslindblom/security-headers
       - uses: marcuslindblom/security-headers/actions@main
         with:
           url: 'https://mprt.se'
