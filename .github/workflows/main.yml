@@ -64,7 +64,14 @@ jobs:
 #        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
 #      with:
 #        args: set image --record deployment/web web=wieldy.azurecr.io/web-service:0.0.1-preview.324
-    
+
+    - name: update deploy status
+      if: always()
+      uses: unacast/actions-github-deployment-status@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        status: in_progress
+        
     - uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
@@ -104,3 +111,10 @@ jobs:
         echo $SYNC_VERSION
         GH_REF=$(echo ${{ github.ref }})
         echo $GH_REF
+
+    - name: update deploy status
+      if: always()
+      uses: unacast/actions-github-deployment-status@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        status: ${{ job.status }}
