@@ -17,4 +17,4 @@ jobs:
           repository: marcuslindblom/security-headers
       - uses: marcuslindblom/security-headers@main
         with:
-          url: 'https://mprt.se'
+          url: ${{ secrets.SECURITY_HEADERS_URL }}
