@@ -13,7 +13,7 @@ jobs:
         uses: foo-software/lighthouse-check-action@master
         id: lighthouseCheck
         with:
-          apiToken: ${{ secrets.LIGHTHOUSE_CHECK_API_TOKEN }}
+          #apiToken: ${{ secrets.LIGHTHOUSE_CHECK_API_TOKEN }}
           urls: ${{ secrets.SECURITY_HEADERS_URL }}
           accessToken: ${{ secrets.DEPLOY_TOKEN }}
           author: ${{ github.actor }}
