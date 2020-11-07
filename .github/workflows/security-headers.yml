@@ -1,6 +1,6 @@
 name: Security Headers
 
-on: [deployment_status]
+on: [deployment]
 
 jobs:
   check:
