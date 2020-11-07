@@ -10,8 +10,6 @@ on:
       - ready_for_review
       - synchronize
       - opened
-    branches:
-      - feature/*
   push:
     branches: 
       - master
