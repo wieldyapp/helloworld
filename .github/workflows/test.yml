@@ -48,6 +48,7 @@ jobs:
           target_url: https://wieldy.app
           state: "success"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          ref: ${{ github.ref }}
 
       - name: Update deployment status (failure)
         if: failure()
@@ -57,3 +58,4 @@ jobs:
           target_url: https://wieldy.app
           state: "failure"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          ref: ${{ github.ref }}
