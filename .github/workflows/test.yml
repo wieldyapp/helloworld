@@ -29,7 +29,7 @@ jobs:
         id: deployment
         with:
           step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DEPLOY_TOKEN }}
           env: production
           ref: ${{ github.head_ref }}
 
@@ -48,7 +48,7 @@ jobs:
         if: always()
         with:
           step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DEPLOY_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           env_url: https://wieldy.app
