@@ -7,8 +7,6 @@ name: TEST
 on:
   pull_request:
     types:
-      - opened
-      - reopened
       - ready_for_review
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
