@@ -28,7 +28,7 @@ jobs:
           token: "${{ secrets.DEPLOY_TOKEN }}"
           target_url: https://wieldy.app
           environment: production
-          ref: ${{ github.sha }}
+          ref: ${{ github.head_ref }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -48,7 +48,6 @@ jobs:
           target_url: https://wieldy.app
           state: "success"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          ref: ${{ github.sha }}
 
       - name: Update deployment status (failure)
         if: failure()
@@ -58,4 +57,3 @@ jobs:
           target_url: https://wieldy.app
           state: "failure"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          ref: ${{ github.sha }}
