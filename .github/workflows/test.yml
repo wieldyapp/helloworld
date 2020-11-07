@@ -23,24 +23,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        
-#      - uses: chrnorm/deployment-action@releases/v1
-#        name: Create GitHub deployment
-#        id: deployment
-#        with:
-#          token: "${{ secrets.DEPLOY_TOKEN }}"
-#          target_url: https://wieldy.app
-#          environment: production
-#          ref: ${{ github.head_ref }}
 
-      - id: deployment
-        name: Update deployment status (in_progress)      
-        uses: avakar/set-deployment-status@v1
-        env:
-          GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
+      - name: Create GitHub deployment
+        uses: bobheadxi/deployments@master
+        id: deployment
         with:
-          environment_url: https://wieldy.app
-          state: "in_progress"
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: production
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -52,22 +42,12 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - uses: avakar/set-deployment-status@v1
-        name: Update deployment status (success)
-        if: success()        
-        env:
-          GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
+      - name: Update GitHub deployment status
+        uses: bobheadxi/deployments@master
+        if: always()
         with:
-          environment_url: https://wieldy.app
-          state: "success"
-          deployment_id: ${{ steps.deployment.outputs.deployment_status_id }}
-
-      - uses: avakar/set-deployment-status@v1
-        name: Update deployment status (failure)
-        if: failure()        
-        env:
-          GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
-        with:
-          environment_url: https://wieldy.app
-          state: "failure"
-          deployment_id: ${{ steps.deployment.outputs.deployment_status_id }}
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env_url: https://wieldy.app
