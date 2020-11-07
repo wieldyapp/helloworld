@@ -20,6 +20,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ secrets.DEPLOY_TOKEN }}"
+          target_url: https://wieldy.app
+          environment: production
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -30,3 +38,21 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ secrets.DEPLOY_TOKEN }}"
+          target_url: https://wieldy.app
+          state: "success"
+          deployment_id: ${{ github.event.deployment.id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ secrets.DEPLOY_TOKEN }}"
+          target_url: https://wieldy.app
+          state: "failure"
+          deployment_id: ${{ github.event.deployment.id }}
