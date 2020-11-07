@@ -3,7 +3,7 @@ name: Security Headers
 on:
   pull_request_review:
     branches:
-    - feature/*
+    - master
 
 jobs:
   check:
