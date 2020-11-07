@@ -33,9 +33,9 @@ jobs:
 #          environment: production
 #          ref: ${{ github.head_ref }}
 
-      - uses: avakar/set-deployment-status@v1
       - id: deployment
         name: Update deployment status (in_progress)      
+        uses: avakar/set-deployment-status@v1
         env:
           GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
         with:
