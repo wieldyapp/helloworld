@@ -24,14 +24,23 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         
-      - uses: chrnorm/deployment-action@releases/v1
-        name: Create GitHub deployment
+#      - uses: chrnorm/deployment-action@releases/v1
+#        name: Create GitHub deployment
+#        id: deployment
+#        with:
+#          token: "${{ secrets.DEPLOY_TOKEN }}"
+#          target_url: https://wieldy.app
+#          environment: production
+#          ref: ${{ github.head_ref }}
+
+      - name: Update deployment status (in_progress)
+        uses: avakar/set-deployment-status@v1
         id: deployment
+        env:
+          GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
         with:
-          token: "${{ secrets.DEPLOY_TOKEN }}"
-          target_url: https://wieldy.app
-          environment: production
-          ref: ${{ github.head_ref }}
+          environment_url: https://wieldy.app
+          state: "in_progress"
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
