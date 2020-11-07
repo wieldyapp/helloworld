@@ -55,6 +55,7 @@ jobs:
 
       - name: Update deployment status (failure)
         if: failure()
+        uses: avakar/set-deployment-status@v1
         env:
           GITHUB_TOKEN: "${{ secrets.DEPLOY_TOKEN }}"
         with:
