@@ -9,7 +9,6 @@ on:
     types:
       - ready_for_review
       - synchronize
-      - opened
   push:
     branches: 
       - master
