@@ -28,6 +28,7 @@ jobs:
           token: "${{ secrets.DEPLOY_TOKEN }}"
           target_url: https://wieldy.app
           environment: production
+          ref: ${{ github.ref }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
