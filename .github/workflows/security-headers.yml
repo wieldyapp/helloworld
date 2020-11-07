@@ -1,9 +1,6 @@
 name: Security Headers
 
-on:
-  pull_request_review:
-    branches:
-    - master
+on: [deployment_status]
 
 jobs:
   check:
