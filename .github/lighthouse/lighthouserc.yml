@@ -8,8 +8,8 @@ ci:
     assertions:
       #offscreen-images: 'off'
       #uses-webp-images: 'off'
-      #color-contrast: 'off'
-      iis-crawlable: 'off'
+      color-contrast: 'off'
+      is-crawlable: 'off'
       #first-contentful-paint:
       #  - error
       #  - maxNumericValue: 2000
