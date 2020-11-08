@@ -51,15 +51,13 @@ jobs:
       needs: [build]
       runs-on: ubuntu-latest
       steps:
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/setup-node@v1.4.1
       - uses: actions/checkout@v2
-
-      - name: Run Lighthouse on urls and upload data to private lhci server
-        uses: treosh/lighthouse-ci-action@v2
-        with:
-          runs: 3
-          configPath: .github/lighthouse/lighthouserc.yml
-          budgetPath: .github/lighthouse/budgets.json
-          serverBaseUrl: ${{ secrets.LHCI_SERVER_BASE_URL }}
-          serverToken: ${{ secrets.LHCI_TOKEN }}
-          uploadArtifacts: false # don't store artifacts as a part of action
+      - name: Run Lighthouse CI
+        if: job.status == 'success'
+        run: |
+          npm install -g @lhci/cli@0.4.x
+          lhci autorun --config=.github/lighthouse/lighthouserc.yml && lhci assert --no-lighthouserc --budgetsFile=.github/lighthouse/budgets.json
+        env:
+          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
