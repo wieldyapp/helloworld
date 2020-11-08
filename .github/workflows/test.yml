@@ -69,6 +69,7 @@ jobs:
   security-headers-check:
     if: success()
     needs: [build]
+    name: Analyse HTTP response headers
     runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2
