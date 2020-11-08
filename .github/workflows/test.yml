@@ -39,15 +39,16 @@ jobs:
 
       - name: Update GitHub deployment status
         uses: bobheadxi/deployments@master
-        if: always()
+        if: success()
         with:
           step: finish
           token: ${{ secrets.DEPLOY_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: https://wieldy.app
+          env_url: https://wieldy.app/
   
   lighthouse-check:
+      if: success()
       needs: [build]
       runs-on: ubuntu-latest
       steps:
@@ -64,3 +65,15 @@ jobs:
         run: |
           npm install -g @lhci/cli@0.6.x
           lhci autorun --config=.github/lighthouse/lighthouserc.yml
+
+  security-headers-check:
+    if: success()
+    needs: [build]
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: marcuslindblom/security-headers
+      - uses: marcuslindblom/security-headers@main
+        with:
+          url: ${{ secrets.SECURITY_HEADERS_URL }}
