@@ -1,6 +1,6 @@
 ci:
   collect:
-    numberOfRuns: 5
+    numberOfRuns: 1
     url:
      - https://wieldy.app/
   assert:
@@ -18,6 +18,6 @@ ci:
       #  - error
       #  - maxNumericValue: 5000
       #    aggregationMethod: optimistic
-  #upload:
-  #  target: lhci
-  #  serverBaseUrl: https://lhci.wieldy.app
+  upload:
+    target: lhci
+    serverBaseUrl: https://lhci.wieldy.app
