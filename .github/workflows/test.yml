@@ -56,7 +56,7 @@ jobs:
       - name: Run Lighthouse CI
         if: job.status == 'success'
         run: |
-          npm install -g @lhci/cli@0.4.x
+          npm install -g @lhci/cli@@0.6.x
           lhci autorun --config=.github/lighthouse/lighthouserc.yml && lhci assert --no-lighthouserc --budgetsFile=.github/lighthouse/budgets.json
         env:
           LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
