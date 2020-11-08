@@ -14,7 +14,7 @@ jobs:
         id: lighthouseCheck
         with:
           #apiToken: ${{ secrets.LIGHTHOUSE_CHECK_API_TOKEN }}
-          urls: ${{ secrets.SECURITY_HEADERS_URL }}
+          urls: https://wieldy.app
           accessToken: ${{ secrets.DEPLOY_TOKEN }}
           author: ${{ github.actor }}
           branch: ${{ github.ref }}
