@@ -56,7 +56,7 @@ jobs:
           uses: foo-software/lighthouse-check-action@master
           id: lighthouseCheck
           with:
-            urls: 'https://brickpile.app/'
+            urls: 'https://wieldy.app/'
             accessToken: ${{ secrets.LIGHTHOUSE_CHECK_GITHUB_ACCESS_TOKEN }}
             author: ${{ github.actor }}
             branch: ${{ github.head_ref }}
