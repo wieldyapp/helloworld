@@ -48,6 +48,7 @@ jobs:
           env_url: https://wieldy.app
   
   lighthouse-check:
+      needs: [build]
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@master
@@ -59,8 +60,8 @@ jobs:
             urls: 'https://wieldy.app/'
             accessToken: ${{ secrets.LIGHTHOUSE_CHECK_GITHUB_ACCESS_TOKEN }}
             author: ${{ github.actor }}
-            branch: ${{ github.head_ref }}
-            sha: ${{ github.sha }}
+            # branch: ${{ github.head_ref }}
+            # sha: ${{ github.sha }}
             # slackWebhookUrl: ${{ secrets.SLACK_WEBHOOK }}
             # ... all your other inputs
         - name: Handle Lighthouse Check results
