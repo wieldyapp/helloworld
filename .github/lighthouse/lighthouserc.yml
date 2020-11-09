@@ -1,9 +1,8 @@
 ci:
   collect:
-    numberOfRuns: 1
+    numberOfRuns: 3
     url:
      - https://wieldy.app/
-     - https://wieldy.app/changelog/
   assert:
     preset: lighthouse:recommended
     assertions:
