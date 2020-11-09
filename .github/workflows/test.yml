@@ -47,6 +47,7 @@ jobs:
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           env_url: https://wieldy.app/
+          desc: Helo, world
   
   lighthouse-check:
       if: success()
