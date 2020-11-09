@@ -69,7 +69,6 @@ jobs:
           lhci autorun --config=.github/lighthouse/lighthouserc.yml
 
   security-headers-check:
-    if: success()
     needs: [build]
     name: Analyse HTTP response headers
     runs-on: ubuntu-latest    
@@ -81,3 +80,16 @@ jobs:
         with:
           url: ${{ secrets.SECURITY_HEADERS_URL }}
           grade: C
+
+  yellow-lab-tools-check:
+    needs: [build]
+    name: Detect performance and front-end issues
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: marcuslindblom/yellow-lab-tools
+      - uses: marcuslindblom/yellow-lab-tools@main
+        with:
+          url: ${{ secrets.SECURITY_HEADERS_URL }}
+          score: 90
