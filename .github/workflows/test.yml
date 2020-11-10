@@ -33,6 +33,7 @@ jobs:
           token: ${{ secrets.DEPLOY_TOKEN }}
           env: production
           ref: ${{ github.head_ref }}
+          desc: "Hello, world"
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -47,7 +48,6 @@ jobs:
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           env_url: https://wieldy.app/
-          desc: Helo, world
   
   lighthouse-check:
       if: success()
