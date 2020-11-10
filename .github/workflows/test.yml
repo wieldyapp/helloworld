@@ -94,4 +94,4 @@ jobs:
         with:
           url: ${{ secrets.SECURITY_HEADERS_URL }}
           score: 100
-          host: ${{ secrets.YELLOW_LABS_TOOLS_HOST }}
+          host: ${{ secrets.YELLOW_LAB_TOOLS_HOST }}
