@@ -87,7 +87,11 @@ jobs:
     name: Detect performance and front-end issues
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: marcuslindblom/yellow-lab-tools
       - uses: marcuslindblom/yellow-lab-tools@main
         with:
           url: ${{ secrets.SECURITY_HEADERS_URL }}
-          score: 95
+          score: 100
+          host: ${{ secrets.YELLOW_LABS_TOOLS_HOST }}
