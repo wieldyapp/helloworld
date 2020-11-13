@@ -93,5 +93,4 @@ jobs:
       - uses: marcuslindblom/yellow-lab-tools@main
         with:
           url: ${{ secrets.SECURITY_HEADERS_URL }}
-          score: 98
           host: ${{ secrets.YELLOW_LAB_TOOLS_HOST }}
