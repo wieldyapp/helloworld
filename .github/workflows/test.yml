@@ -7,6 +7,8 @@ name: TEST
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    branches: 
+      - feature/*
 #  push:
 #    branches: 
 #      - master
@@ -37,7 +39,14 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: |
+          VERSION_PREFIX=$(grep '<VersionPrefix>' sync.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
+          SYNC_VERSION=$(echo ${{format('{0}-{1}', '${VERSION_PREFIX}', git rev-parse --short github.head_ref)}})
+          echo "SYNC_VERSION=$SYNC_VERSION" >> $GITHUB_ENV
+          
+      - name: Ending action
+        run: |
+          echo $SYNC_VERSION
 
       - name: Update GitHub deployment status
         uses: bobheadxi/deployments@master
