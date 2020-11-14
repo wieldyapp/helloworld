@@ -41,7 +41,8 @@ jobs:
       - name: Run a one-line script
         run: |
           VERSION_PREFIX=$(grep '<VersionPrefix>' sync.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
-          SYNC_VERSION=$(echo ${{format('{0}-{1}', '${VERSION_PREFIX}', git rev-parse --short github.head_ref)}})
+          SHA=$(echo ${{ github.head_ref }} | awk '{print substr($0, length($0)-7)}')
+          SYNC_VERSION=$(echo ${{format('{0}-{1}', '${VERSION_PREFIX}', '${SHA}')}})
           echo "SYNC_VERSION=$SYNC_VERSION" >> $GITHUB_ENV
           
       - name: Ending action
