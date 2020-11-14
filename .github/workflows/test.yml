@@ -42,7 +42,7 @@ jobs:
         run: |
           VERSION_PREFIX=$(grep '<VersionPrefix>' sync.csproj | sed "s@.*<VersionPrefix>\(.*\)</VersionPrefix>.*@\1@")
           SHA=${{ github.event.pull_request.head.sha }}
-          SYNC_VERSION=$(echo ${{format('{0}-{1}', '${VERSION_PREFIX}', "${SHA:0:7}")}})
+          SYNC_VERSION=$(echo ${{format('{0}-{1}', '${VERSION_PREFIX}', '${SHA:0:7}')}})
           echo "SYNC_VERSION=$SYNC_VERSION" >> $GITHUB_ENV
           
       - name: Ending action
